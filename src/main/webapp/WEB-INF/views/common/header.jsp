@@ -1,4 +1,5 @@
-<%@ page contentType="text/html; charset=UTF-8"%><!DOCTYPE html>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -17,9 +18,16 @@
 <body>
    <div class="d-flex flex-column vh-100">
       <nav class="navbar navbar-dark bg-dark font-weight-bold">
-         <a class="navbar-brand" href="#"> <img
-            src="/webapp/resources/images/logo-spring.png" width="30"
+         <a class="navbar-brand" href="#"> 
+           <img
+   			src="${pageContext.request.contextPath}/resources/images/logo-spring.png" width="30"
             height="30" class="d-inline-block align-top" alt="" />
+            
+            <%-- 
+            <img
+   			src="<%=request.getContextPath()%>/resources/images/logo-spring.png" width="30"
+            height="30" class="d-inline-block align-top" alt="" />     --%>
+            
             Spring
          </a>
          <div>
