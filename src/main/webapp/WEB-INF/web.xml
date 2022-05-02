@@ -13,6 +13,11 @@
    <listener>
       <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
    </listener>
+   
+      <!-- Spring Security 로그인 중복 방지를 위해 설정 -->
+   <listener>
+     <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+   </listener>
 
    <!-- 클라이언트에 요청을 처리하는 DispatcherServlet 설정 -->
    <servlet>
@@ -24,8 +29,27 @@
          <!-- <param-value>/WEB-INF/spring/appServlet/*.xml</param-value> -->
          <param-value>classpath:spring/dispatcher/*.xml</param-value>
       </init-param>
+     <!-- 404일 경우 500에러로 발생 -->
+      <init-param>
+         <param-name>throwExceptionIfNoHandlerFound</param-name>
+         <param-value>true</param-value>
+      </init-param>
+      
       <!-- 배치할 때  DispatcherServlet 이 객체를 생성함-->
       <load-on-startup>1</load-on-startup>
+      <!-- Servelet 3.0에서 지원하는 multipart/form-data 파싱 기능을 위한 설정 -->
+      <multipart-config>
+      	<!-- 절대 경로만 가능 -->
+      	<location>C:/temp</location>
+      	<!-- 10MB만 허용 -->
+      	<max-file-size>10485760</max-file-size>
+      	<!-- multipart/form-data 전체 크기가 30M 이하만 허용 -->
+      	<max-request-size>31457280</max-request-size>
+      	<!-- 임시 파일로 저장해야 할 파일의 크기 저장(요청 처리가 끝나면 임시 파일 삭제 -->
+      	<file-size-threshold>1024</file-size-threshold>
+      </multipart-config>
+      
+      
    </servlet>
    <!-- 클라이언트가 http://localhost:8080/webapp/... 이런 URL로 요청할 경우 DispatcherServlet 처리 -->
    <servlet-mapping>
@@ -46,5 +70,20 @@
    <filter-mapping>
       <filter-name>encodingFilter</filter-name>
       <url-pattern>/*</url-pattern>
+   </filter-mapping>
+   
+   <!-- 404 에러 처리 -->
+   <error-page>
+   		<error-code>404</error-code>
+   		<location>/WEB-INF/views/ch10/404.jsp</location>
+   </error-page>
+   
+   <filter>
+	     <filter-name>springSecurityFilterChain</filter-name>
+	     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+   </filter>
+   <filter-mapping>
+	     <filter-name>springSecurityFilterChain</filter-name>
+	     <url-pattern>/*</url-pattern>
    </filter-mapping>
 </web-app>
